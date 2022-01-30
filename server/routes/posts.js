@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/Users");
 const Post = require("../models/Posts");
-const Posts = require("../models/Posts");
 
 //CREATE NEW POST
 //router.put is used to update data

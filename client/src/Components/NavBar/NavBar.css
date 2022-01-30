@@ -25,6 +25,7 @@
     height:40px;
     border-radius:50%; /* to make it a circle*/
     object-fit: contain;
+    cursor: pointer;
 }
 
 .Icon{

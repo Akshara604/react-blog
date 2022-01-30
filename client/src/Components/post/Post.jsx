@@ -1,29 +1,34 @@
 import "./Post.css";
 import {Link} from "react-router-dom"; 
+import Posts from "../posts/Posts";
 
-export default function Post() {
+export default function Post({post}) { //post prop from Posts.jsx
+  // const PF = "http://localhost:5000/images/";
   return (
   <div className="post">
+  {post.photo &&(
     <img
      className="postImg"
-     src="https://images.pexels.com/photos/957024/forest-trees-perspective-bright-957024.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-     alt="trees" />
+     src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    //  {PF + post.photo}
+     alt="postPhoto" />
+  )}
+    
      <div className="postInfo">
         <div className="postCategs">
-            <span className="postCateg">Music</span>
-            <span className="postCateg">Life</span>
+          {post.categories.map((c)=> (
+            <span className="postCateg">{c.name}</span>
+          ))}
         </div>
+        {/* <Link to={`/post/${post._id}`}></Link> */}
         <span className="postTitle">
-        <Link className="link" to="/post/:postId">Esse commodo commodo eiusmod laboris.</Link>
+        <Link className="link" to={`/post/${post._id}`}>{post.title}</Link>
         </span>
         <hr />
-        <span className="postDate">1 hr ago</span>
+        <span className="postDate">{new Date(post.createdAt).toDateString()}</span>
      </div>
      <p className="postDescrip">
-         Dolor laboris tempor adipisicing tempor amet deserunt. 
-         Incididunt do sunt deserunt anim. 
-         Nostrud ut consectetur aliqua voluptate pariatur consequat excepteur id ut ipsum ut excepteur minim. 
-         Pariatur reprehenderit amet qui consequat qui commodo consectetur.
+         {post.descrip}
      </p>
   </div>);
 }

@@ -1,16 +1,19 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
 const multer =require("multer");
+const path = require("path");
 dotenv.config();
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
+app.use("/images", express.static(path.join(__dirname,"/images")) )
 
 main().catch(err => console.log(err));
 

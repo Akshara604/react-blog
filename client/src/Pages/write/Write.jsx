@@ -1,25 +1,67 @@
+import { useContext, useState } from "react";
 import "./write.css";
+import axios from "axios";
+import {Context} from "../../context/Context"
 
 export default function Write() {
+
+  const [title,setTitle] = useState("");
+  const [descrip,setDescrip] = useState("");
+  const [file,setFile] = useState(null);
+  const {user} = useContext(Context);
+
+  const handleSubmit = async(e) =>{
+    e.preventDefault();
+    const newPost ={
+      username: user.username,
+      title,
+      descrip,
+    }
+    if(file){
+      const data = new FormData();
+      const filename = Date.now() + file.name; //to prevent user from uploading different image with same name
+      data.append("name",filename);
+      data.append("file",file);
+      newPost.photo = filename;
+      try {
+        await axios.post("http://localpost:5000/api/upload" ,data)
+      } catch (error) {
+        
+      }
+    }
+    try {
+      const res = await axios.post("http://localhost:5000/api/posts", newPost);
+      window.location.replace("/post/" + res.data._id); //to switch to single posts window
+    } catch (error) {
+      
+    }
+    
+  }
   return (
   <div className="write">
-  {/* for design purpose */}
-  <img className="writeImg"
-                src="https://images.pexels.com/photos/6348820/pexels-photo-6348820.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                alt="sky" />
-    <form className="writeForm">
+  {file && (
+    <img className="writeImg"
+                src={URL.createObjectURL(file)}
+                alt="post image" />
+  )}
+
+    <form className="writeForm" onSubmit={handleSubmit}>
         <div className="writeFormGroup">
-         {/* The plus icon opens the folder to insert file */}
-            <label htmlFor="fileInput">
+         {/*The plus icon opens the folder to insert file */}
+           <label htmlFor="fileInput">
                 <i className=" writeIcon fas fa-plus"></i>
             </label>
-              <input type="file" id="fileInput" style={{display:"none"}}/> {/*style to remove the choose button */}
-            <input type="text" placeholder="Title" className="writeInput" autoFocus={true}/> {/*Autofocus true ensures that when u refresh the page the title gets focused and ready to type */}
+            <input type="file" id="fileInput" 
+               style={{display:"none"}} onChange={(e)=> setFile(e.target.files[0])}/> {/*style to remove the choose button*/}
+            <input type="text" placeholder="Title" 
+              className="writeInput" autoFocus={true}  
+              onChange={(e)=>setTitle(e.target.value)}/> {/*Autofocus true ensures that when u refresh the page the title gets focused and ready to type */}
         </div>
         <div className="writeFormGroup">
-            <textarea placeholder="Tell your story..." type="text" className="writeInput writeText" />
+            <textarea placeholder="Tell your story..." type="text" 
+              className="writeInput writeText" onChange={(e)=>setDescrip(e.target.value)}/>
         </div>
-        <button className="writeSubmit">Publish</button>
+        <button className="writeSubmit" type="submit">Publish</button>
     </form>
   </div>);
 }

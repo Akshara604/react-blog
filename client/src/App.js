@@ -6,10 +6,12 @@ import Settings from "./Pages/settings/Settings";
 import Single from "./Pages/single/Single";
 import Write from "./Pages/write/Write";
 import { Routes, Route, } from "react-router-dom";
+import { useContext } from "react";
+import { Context } from "./context/Context";
 
 
 function App() {
-  const user = false;
+  const {user} = useContext(Context);
   return (
     <>
       <NavBar />

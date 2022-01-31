@@ -2,7 +2,7 @@ import "./settings.css";
 import SideBar from "../../Components/SideBar/SideBar"
 import { useContext ,useState} from "react";
 import { Context } from "../../context/Context";
-import axios from "axios";
+import { axiosInstance } from "../../config";
 
 export default function Settings() {
     const {user, dispatch} = useContext(Context);
@@ -27,11 +27,11 @@ export default function Settings() {
           data.append("file",file);
           // updatedUser.profilePic = filename;
           try {
-            await axios.post("http://localpost:5000/api/upload" ,data)
+            await axiosInstance.post("/upload" ,data)
           } catch (error) {  }
         }
         try {
-           const res = await axios.put("http://localhost:5000/api/users/" + user._id, updatedUser);
+           const res = await axiosInstance.put("/users/" + user._id, updatedUser);
            setSuccess(true);
            dispatch({type:"UPDATE_SUCCESS", payload : res.data});
         } catch (error) {

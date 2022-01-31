@@ -1,8 +1,8 @@
 import { useEffect, useState , useContext} from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./singlePost.css";
-import axios from "axios";
 import { Context } from "../../context/Context";
+import { axiosInstance } from "../../config";
 
 //ERROR: JUSTIFY CONTENT SPACE BETWEEN IS NOT APPLIED CHECK LATER
 export default function SinglePost() {
@@ -18,7 +18,7 @@ export default function SinglePost() {
 
     useEffect(() =>{
         const getPost = async() =>{
-            const response = await axios.get("http://localhost:5000/api/posts/"+path);
+            const response = await axiosInstance.get("/posts/"+path);
             setPost(response.data);
             setTitle(response.data.title);
             setDescrip(response.data.descrip);
@@ -28,7 +28,7 @@ export default function SinglePost() {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`http://localhost:5000/api/posts/${post._id}`, {data:{username: user.username}});
+            await axiosInstance.delete(`/posts/${post._id}`, {data:{username: user.username}});
             window.location.replace("/");
         } catch (error) {
             
@@ -37,7 +37,7 @@ export default function SinglePost() {
 
     const handleUpdate = async () =>{
         try {
-            await axios.put(`http://localhost:5000/api/posts/${post._id}`, 
+            await axiosInstance.put(`/posts/${post._id}`, 
           {username: user.username, title:title, descrip:descrip}  );
             // window.location.reload();
             setUpdateMode(false);

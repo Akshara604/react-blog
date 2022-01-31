@@ -1,7 +1,7 @@
 import "./SideBar.css";
 import {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { axiosInstance } from "../../config";
 
 export default function SideBar() {
 
@@ -9,7 +9,7 @@ export default function SideBar() {
 
     useEffect(() =>{
         const getCategs = async()=> {
-            const res = await axios.get("http://localhost:5000/api/categories");
+            const res = await axiosInstance.get("/categories");
             setCategs(res.data);
         }
         getCategs();

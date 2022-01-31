@@ -2,8 +2,7 @@ import "./login.css";
 import {Link} from "react-router-dom"; 
 import { useContext, useRef } from "react";
 import { Context } from "../../context/Context";
-import { LoginSuccess } from "../../context/Actions";
-import axios from "axios";
+import { axiosInstance } from "../../config";
 
 export default function Login() {
 
@@ -15,7 +14,7 @@ export default function Login() {
     e.preventDefault(); //to not refresh the page everytime it's clicked
     dispatch({type:"LOGIN_START"});
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axiosInstance.post("/auth/login", {
         username: userRef.current.value,
         password: passwordRef.current.value,
       });

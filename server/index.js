@@ -44,7 +44,13 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
+// We are gonna use html, css and javascript
+app.use(express.static(path.join(__dirname, "/client/build")));
+// * denotes "if the server gets any request"
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+});
 
-app.listen(5000, () => {
+app.listen(process.env.PORT || 5000, () => {
     console.log("Listening at port 5000")
 });
